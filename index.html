@@ -87,6 +87,28 @@ summary{cursor:pointer;font-size:1rem;color:var(--sub)}
 .mv-sign{background:var(--film);outline-color:var(--film)}
 .pick.song .ic{background:#C8553D;color:#fff;box-shadow:0 5px 0 #8E3524}
 .song-mode .mv-sign{background:#A63D2A;outline-color:#A63D2A}
+.pick.star .ic{background:#6D4C9F;color:#fff;box-shadow:0 5px 0 #4A3170}
+.hello{position:relative}
+.heart{position:absolute;right:0;top:0;background:transparent;font-size:1.3rem;padding:.4rem;opacity:.75}
+.pick.prov .ic{background:#2A9D8F;color:#fff;box-shadow:0 5px 0 #1C6B61}
+.prov-mode .mv-sign{background:#2A9D8F;outline-color:#2A9D8F}
+.st-sign{background:#6D4C9F;outline-color:#6D4C9F}
+.stage{background:#2E2140;color:#fff;border-radius:1.25rem;padding:1.3rem 1.1rem 1.5rem;text-align:center}
+.stage .who{font-size:clamp(1.8rem,8.5vw,2.4rem);font-weight:600;line-height:1.35;margin:.2rem 0 .8rem}
+.vowel{display:inline-flex;align-items:center;gap:.5rem;background:var(--tile);color:var(--tileInk);border-radius:1rem;padding:.35rem 1rem;font-size:1.05rem}
+.vowel b{font-size:2rem;line-height:1.2}
+.clock{font-size:3.6rem;font-weight:600;font-variant-numeric:tabular-nums;margin-top:1rem;line-height:1}
+.clock.low{color:#FFB4A2}.clock.done{color:#FFB4A2;font-size:2.4rem}
+.stage .bar{margin:.7rem 0 0}
+.counter{display:flex;align-items:center;justify-content:center;gap:1rem}
+.counter .num{font-size:4.2rem;font-weight:600;min-width:6rem;text-align:center;line-height:1}
+.counter .lab{color:var(--sub);text-align:center;margin:-.4rem 0 0}
+.plus{width:100%;padding:1.3rem;font-size:1.6rem;font-weight:600;background:#6D4C9F;color:#fff;box-shadow:0 5px 0 #4A3170}
+.plus:disabled{opacity:.4;box-shadow:none}
+.minus{background:var(--panel);color:var(--ink);border:1px solid var(--line)!important;width:3.4rem;height:3.4rem;font-size:1.5rem}
+.hist li{display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding:.25rem 0}
+.pick.job .ic{background:#3D5A80;color:#fff;box-shadow:0 5px 0 #23395B}
+.job-mode .mv-sign{background:#3D5A80;outline-color:#3D5A80}
 .animals{margin-top:1rem}
 .lvl[hidden],.animals[hidden]{display:none}
 .animals p{margin:0 0 .5rem;font-size:.95rem;color:#D6D8E6}
@@ -141,10 +163,13 @@ summary{cursor:pointer;font-size:1rem;color:var(--sub)}
 
 <!-- HOME -->
 <section class="view" id="v-home">
-  <div class="hello"><h1>เกมเล่นในรถ</h1><p>เลือกเกมที่อยากเล่น</p></div>
-  <button class="pick g24" id="go24"><span class="ic">24</span><span><b>เกม 24</b><span>เอาเลข 4 ตัวมาคิดให้ได้ 24</span></span></button>
+  <div class="hello"><button class="heart" id="go24" aria-label="เกมลับ">❤️</button><h1>เกมเล่นในรถ</h1><p>เลือกเกมที่อยากเล่น</p></div>
+  
   <button class="pick mv" id="goMv"><span class="ic">🎬</span><span><b>ใบ้ชื่อหนังไทย</b><span>คนหนึ่งใบ้ คนอื่นทายชื่อเรื่อง</span></span></button>
-  <button class="pick song" id="goSong"><span class="ic">🎤</span><span><b>ร้องเพลงลูกทุ่งเป็นเสียงสัตว์</b><span>ร้องทำนองเป็นเสียง ไก่ หมู แมว หมา ให้ทายชื่อเพลง</span></span></button>
+  <button class="pick song" id="goSong"><span class="ic">🎤</span><span><b>ฮัมเพลงลูกทุ่ง</b><span>ฮัมทำนอง ห้ามร้องเนื้อ ให้ทายชื่อเพลง</span></span></button>
+  <button class="pick job" id="goJob"><span class="ic">🎭</span><span><b>ใบ้ท่าทางอาชีพ</b><span>ทำท่าอย่างเดียว ห้ามพูด ให้ทายอาชีพ</span></span></button>
+  <button class="pick star" id="goStar"><span class="ic">⭐</span><span><b>ต่อชื่อดารา</b><span>พูดชื่อดาราที่ลงท้ายด้วยสระเดียวกัน แข่งกับเวลา</span></span></button>
+  <button class="pick prov" id="goProv"><span class="ic">🗺️</span><span><b>ใบ้ชื่อจังหวัด</b><span>ใบ้จากของดี ที่เที่ยว ให้ทายชื่อจังหวัด</span></span></button>
 </section>
 
 <!-- 24 -->
@@ -193,6 +218,35 @@ summary{cursor:pointer;font-size:1rem;color:var(--sub)}
   <div class="ctl"><button id="bPause">⏸ หยุด</button><button id="bRestart">↺ เริ่มรอบใหม่</button></div>
 </section>
 
+<!-- STAR -->
+<section class="view" id="v-starset" hidden>
+  <header class="sign st-sign"><h1>ต่อชื่อดารา</h1><button class="home-btn" data-home>หน้าแรก</button></header>
+  <div class="result"><h2>วิธีเล่น</h2>
+  <p class="rules" style="margin:0">จอจะสุ่มชื่อดารามาให้ 1 คน พร้อมบอกสระท้ายชื่อ กดเริ่มจับเวลาแล้วผู้เล่นผลัดกันพูดชื่อดาราคนอื่นที่ลงท้ายด้วยสระเดียวกัน กรรมการกด +1 ทุกครั้งที่ต่อได้ ห้ามซ้ำชื่อเดิม ต่อไม่ได้หรือหมดเวลาถือว่าจบรอบ สระเสียงสั้นยาวคู่กัน (อะ–อา อิ–อี อุ–อู) และ ไอ ใอ อัย นับเป็นสระเดียวกันได้ ให้กรรมการตัดสิน</p></div>
+  <p class="label">เวลาต่อรอบ</p>
+  <div class="seg" id="segStar"><button data-t="30">30 วินาที</button><button data-t="60" class="on">1 นาที</button><button data-t="90">1 นาทีครึ่ง</button></div>
+  <button class="big start" id="starGo">เริ่มเล่น</button>
+</section>
+<section class="view" id="v-star" hidden>
+  <header class="sign st-sign"><h1>ต่อชื่อดารา</h1><span class="count" id="stCount">รอบ 1</span><button class="home-btn" id="stEnd">สรุปผล</button></header>
+  <div class="stage">
+    <div class="who" id="stName"></div>
+    <span class="vowel">ลงท้ายด้วยสระ <b id="stVowel"></b></span>
+    <div class="clock" id="stClock">60</div>
+    <div class="bar"><i id="stBar"></i></div>
+  </div>
+  <div class="ctl"><button id="stPlay">▶ เริ่มจับเวลา</button><button id="stReset">↺ เริ่มเวลาใหม่</button></div>
+  <div class="counter"><button class="minus" id="stMinus" aria-label="ลบ 1">−</button><span class="num" id="stNum">0</span><span style="width:3.4rem"></span></div>
+  <p class="counter lab">ต่อได้ (ชื่อ)</p>
+  <button class="plus" id="stPlus">+1 ต่อได้!</button>
+  <button class="big" id="stNext">ดาราคนถัดไป ➜</button>
+</section>
+<section class="view" id="v-starres" hidden>
+  <header class="sign st-sign"><h1>สรุปผลต่อชื่อดารา</h1><button class="home-btn" data-home>หน้าแรก</button></header>
+  <div class="result"><h2 id="stTotal"></h2><ul class="hist" id="stHist"></ul></div>
+  <button class="big start" id="stAgain">เล่นใหม่ทั้งหมด</button>
+</section>
+
 <!-- MOVIE RESULT -->
 <section class="view" id="v-mvres" hidden>
   <header class="sign mv-sign"><h1 class="gname">ใบ้ชื่อหนังไทย</h1><button class="home-btn" data-home>หน้าแรก</button></header>
@@ -203,7 +257,7 @@ summary{cursor:pointer;font-size:1rem;color:var(--sub)}
 </main>
 <script>
 const $=id=>document.getElementById(id);
-const views=["home","24","mvset","mv","mvres"];
+const views=["home","24","mvset","mv","mvres","starset","star","starres"];
 function show(v){views.forEach(x=>$("v-"+x).hidden=x!==v);window.scrollTo(0,0);}
 document.querySelectorAll("[data-home]").forEach(b=>b.onclick=()=>show("home"));
 $("go24").onclick=()=>{show("24");render24();};
@@ -277,16 +331,33 @@ const SONGS=[
 const GAMES={
  movie:{name:"ใบ้ชื่อหนังไทย",unit:"เรื่อง",items:MOVIES,animals:false,helpBtn:"คนใบ้ไม่รู้จักเรื่องนี้? กดดูเรื่องย่อ",
   rules:'คนใบ้ถือมือถือ ดูชื่อเรื่องคนเดียว แล้วใบ้ด้วยท่าทางหรือคำพูด ห้ามพูดคำที่อยู่ในชื่อเรื่อง คนอื่นช่วยกันทาย ทายถูกกด "ถูก" ทายไม่ได้กด "ข้าม" หมดเวลาจะข้ามให้อัตโนมัติ'},
- song:{name:"ร้องเพลงเป็นเสียงสัตว์",unit:"เพลง",items:SONGS,animals:true,helpBtn:"จำเพลงไม่ได้? กดดูชื่อนักร้อง",
-  rules:'คนใบ้ดูชื่อเพลงคนเดียว เลือกสัตว์ 1 ตัว (ไก่ หมู แมว หมา) แล้วร้องทำนองเพลงเป็นเสียงสัตว์ตัวนั้นแทนเนื้อร้อง ห้ามร้องเป็นคำ คนอื่นช่วยกันทายชื่อเพลง ทายถูกกด "ถูก" ทายไม่ได้กด "ข้าม"'}
+ song:{name:"ฮัมเพลงลูกทุ่ง",unit:"เพลง",items:SONGS,animals:false,helpBtn:"จำเพลงไม่ได้? กดดูชื่อนักร้อง",
+  rules:'คนใบ้ดูชื่อเพลงคนเดียว แล้วฮัมทำนองเพลงให้ฟัง (ฮึม ๆ หรือ ลา ลา ลา) ห้ามร้องเนื้อเพลงเป็นคำ คนอื่นช่วยกันทายชื่อเพลง ทายถูกกด "ถูก" ทายไม่ได้กด "ข้าม"'}
 };
+GAMES.job={name:"ใบ้ท่าทางอาชีพ",unit:"อาชีพ",animals:false,helpBtn:"นึกท่าไม่ออก? กดดูไอเดียท่าใบ้",
+  rules:'คนใบ้ดูชื่ออาชีพคนเดียว แล้วใบ้ด้วยท่าทางอย่างเดียว ห้ามพูด ห้ามทำเสียง ห้ามชี้ของรอบตัวที่เป็นคำตอบ คนอื่นช่วยกันทาย ทายถูกกด "ถูก" ทายไม่ได้กด "ข้าม" (คนขับห้ามเป็นคนใบ้นะ)',
+  items:[["หมอ","ง่าย","ใส่หูฟังตรวจหัวใจ"],["พยาบาล","ง่าย","ฉีดยา วัดไข้"],["ตำรวจ","ง่าย","โบกรถ เป่านกหวีด"],["ครู","ง่าย","เขียนกระดาน ชี้ไม้เรียว"],
+  ["ทหาร","ง่าย","วันทยหัตถ์ เดินสวนสนาม"],["พ่อครัว","ง่าย","ผัดกระทะ ชิมอาหาร"],["ชาวนา","ง่าย","ดำนา เกี่ยวข้าว"],["นักบิน","ง่าย","กางแขนเป็นปีก จับคันบังคับ"],
+  ["ช่างตัดผม","ปานกลาง","ทำมือเป็นกรรไกร หวีผม"],["ทันตแพทย์","ปานกลาง","อ้าปากกว้าง ถอนฟัน"],["นักดับเพลิง","ปานกลาง","ถือสายฉีดน้ำ ปีนบันได"],["ไรเดอร์ส่งอาหาร","ปานกลาง","ขี่มอเตอร์ไซค์ ยื่นถุงอาหาร"],
+  ["ช่างภาพ","ปานกลาง","ยกกล้อง กดชัตเตอร์"],["ชาวประมง","ปานกลาง","ทอดแห ดึงอวน"],["วินมอเตอร์ไซค์","ปานกลาง","ใส่เสื้อวิน ยื่นหมวกกันน็อกให้"],["แม่ค้าส้มตำ","ปานกลาง","ตำครก ใส่พริก"],
+  ["นักบัญชี","ยาก","กดเครื่องคิดเลข ตรวจเอกสาร"],["สัตวแพทย์","ยาก","ลูบหัวสัตว์ ฉีดยาให้หมา"],["วาทยกร","ยาก","โบกไม้คุมวงดนตรี"],["นักบินอวกาศ","ยาก","ลอยตัวไร้น้ำหนัก ใส่หมวกอวกาศ"]]};
+GAMES.prov={name:"ใบ้ชื่อจังหวัด",unit:"จังหวัด",animals:false,helpBtn:"นึกไม่ออก? กดดูของดีจังหวัดนี้",
+  rules:'คนใบ้ดูชื่อจังหวัดคนเดียว แล้วใบ้ด้วยท่าทางหรือคำพูด เช่น ของกิน ที่เที่ยว ภาค ห้ามพูดคำที่อยู่ในชื่อจังหวัด คนอื่นช่วยกันทาย ทายถูกกด "ถูก" ทายไม่ได้กด "ข้าม"',
+  items:[["เชียงใหม่","ง่าย","ภาคเหนือ ดอยสุเทพ ข้าวซอย"],["ภูเก็ต","ง่าย","เกาะทางทะเลอันดามัน หาดป่าตอง"],["พระนครศรีอยุธยา","ง่าย","อดีตราชธานี วัดเก่า กุ้งเผา"],["ขอนแก่น","ง่าย","ไดโนเสาร์ ภาคอีสาน"],
+  ["สุพรรณบุรี","ง่าย","เมืองเพลงลูกทุ่ง สำเนียงเหน่อ"],["ชลบุรี","ง่าย","พัทยา งานวิ่งควาย"],["นครราชสีมา","ง่าย","ย่าโม ผัดหมี่โคราช"],["ลพบุรี","ง่าย","ลิงเยอะ พระปรางค์สามยอด"],
+  ["กาญจนบุรี","ปานกลาง","สะพานข้ามแม่น้ำแคว"],["เพชรบุรี","ปานกลาง","ขนมหม้อแกง หาดชะอำ"],["อุดรธานี","ปานกลาง","ทะเลบัวแดง ภาคอีสาน"],["ตรัง","ปานกลาง","หมูย่าง ภาคใต้"],
+  ["สงขลา","ปานกลาง","หาดสมิหลา เกาะหนูเกาะแมว หาดใหญ่"],["เชียงราย","ปานกลาง","วัดร่องขุ่น สามเหลี่ยมทองคำ"],["นครปฐม","ปานกลาง","องค์พระปฐมเจดีย์ ส้มโอ"],["ระยอง","ปานกลาง","เกาะเสม็ด ทุเรียน"],
+  ["จันทบุรี","ปานกลาง","เมืองผลไม้ อัญมณี พลอย"],["สุโขทัย","ปานกลาง","เมืองเก่า พ่อขุนรามคำแหง ลอยกระทง"],["บุรีรัมย์","ปานกลาง","ปราสาทพนมรุ้ง สนามฟุตบอล สนามแข่งรถ"],
+  ["อุบลราชธานี","ยาก","แห่เทียนพรรษา สามพันโบก"],["กระบี่","ยาก","อ่าวนาง เกาะพีพี"],["ประจวบคีรีขันธ์","ยาก","หัวหิน สับปะรด"],["นครศรีธรรมราช","ยาก","วัดพระมหาธาตุ ไอ้ไข่วัดเจดีย์"],
+  ["น่าน","ยาก","ภาพกระซิบรักบันลือโลก วัดภูมินทร์"],["แม่ฮ่องสอน","ยาก","เมืองสามหมอก ปาย"]]};
 const ANIMALS=[["🐓","ไก่","เอ้กอี๊เอ้ก"],["🐷","หมู","อู๊ด อู๊ด"],["🐱","แมว","เหมียว"],["🐶","หมา","โฮ่ง โฮ่ง"]];
 let G=GAMES.movie;
-function openGame(key){G=GAMES[key];document.body.classList.toggle("song-mode",key==="song");
+function openGame(key){G=GAMES[key];document.body.classList.toggle("song-mode",key==="song");document.body.classList.toggle("job-mode",key==="job");document.body.classList.toggle("prov-mode",key==="prov");
+  {const lb=$("segN").lastElementChild;lb.dataset.n=G.items.length;lb.textContent="ทั้งหมด "+G.items.length;if(lb.classList.contains("on"))N=G.items.length;}
   document.querySelectorAll(".gname").forEach(e=>e.textContent=G.name);
   document.querySelectorAll(".unit").forEach(e=>e.textContent=G.unit);
   $("rulesTxt").textContent=G.rules;show("mvset");}
-$("goMv").onclick=()=>openGame("movie");$("goSong").onclick=()=>openGame("song");
+$("goMv").onclick=()=>openGame("movie");$("goSong").onclick=()=>openGame("song");$("goJob").onclick=()=>openGame("job");$("goProv").onclick=()=>openGame("prov");
 let T=60,N=10,deck=[],pos=0,left=0,tick=null,log=[];
 function seg(id,attr,set){$(id).querySelectorAll("button").forEach(b=>b.onclick=()=>{
   $(id).querySelectorAll("button").forEach(x=>x.classList.remove("on"));b.classList.add("on");set(+b.dataset[attr]);});}
@@ -329,6 +400,34 @@ function finish(){
   show("mvres");
 }
 $("mvStart").onclick=startRound;
+
+/* ---------- Star chain ---------- */
+const STARS=[["ญาญ่า","อา"],["ลิซ่า","อา"],["ทาทา","อา"],["โหน่ง ชะชะช่า","อา"],["อั้ม พัชราภา","อา"],["ตั๊กแตน ชลดา","อา"],
+ ["เบลล่า ราณี","อี"],["ซันนี่","อี"],["คิมเบอร์ลี่","อี"],["เปาวลี","อี"],["หญิงลี","อี"],
+ ["ไผ่","ไอ"],["ก้อง ห้วยไร่","ไอ"],["เบิร์ด ธงไชย","ไอ"],
+ ["ฮิวโก้","โอ"],["ปั๊บ โปเตโต้","โอ"],["มาริโอ้ เมาเร่อ","เออ"],
+ ["ณเดชน์ คูกิมิยะ","อะ"],["เจมส์ จิรายุ","อุ"],["ชมพู่","อู"]];
+let ST=60,stLeft=60,stTick=null,stDeck=[],stPos=0,stScore=0,stHistory=[],stDone=false;
+seg("segStar","t",v=>ST=v);
+$("goStar").onclick=()=>show("starset");
+$("starGo").onclick=()=>{stDeck=shuffle(STARS);stPos=0;stHistory=[];show("star");stLoad();};
+function stStop(){if(stTick){clearInterval(stTick);stTick=null;}$("stPlay").textContent=stDone?"⏰ หมดเวลา":"▶ "+(stLeft<ST?"เล่นต่อ":"เริ่มจับเวลา");$("stPlay").classList.remove("paused");}
+function stDraw(){const c=$("stClock");c.textContent=stDone?"หมดเวลา!":stLeft;c.classList.toggle("low",!stDone&&stLeft<=10);c.classList.toggle("done",stDone);
+  $("stBar").style.width=(stLeft/ST*100)+"%";$("stNum").textContent=stScore;$("stPlus").disabled=stDone;$("stPlay").disabled=stDone;}
+function stLoad(){stStop();const m=stDeck[stPos%stDeck.length];$("stName").textContent=m[0];$("stVowel").textContent=m[1];
+  $("stCount").textContent="รอบ "+(stHistory.length+1);stScore=0;stLeft=ST;stDone=false;stStop();stDraw();}
+$("stPlay").onclick=()=>{if(stTick){stStop();$("stPlay").textContent="▶ เล่นต่อ";return;}
+  $("stPlay").textContent="⏸ หยุด";$("stPlay").classList.add("paused");
+  stTick=setInterval(()=>{stLeft--;if(stLeft<=0){stLeft=0;stDone=true;stStop();if(navigator.vibrate)try{navigator.vibrate([200,100,200])}catch(e){}}stDraw();},1000);};
+$("stReset").onclick=()=>{stDone=false;stLeft=ST;stStop();stDraw();};
+$("stPlus").onclick=()=>{stScore++;stDraw();if(navigator.vibrate)try{navigator.vibrate(30)}catch(e){}};
+$("stMinus").onclick=()=>{if(stScore>0)stScore--;stDraw();};
+function stSave(){const m=stDeck[stPos%stDeck.length];stHistory.push({n:m[0],v:m[1],s:stScore});}
+$("stNext").onclick=()=>{stSave();stPos++;stLoad();};
+$("stEnd").onclick=()=>{stStop();stSave();
+  const tot=stHistory.reduce((a,b)=>a+b.s,0);$("stTotal").textContent=`เล่น ${stHistory.length} รอบ ต่อได้รวม ${tot} ชื่อ`;
+  $("stHist").innerHTML=stHistory.map((h,k)=>`<li><span>${k+1}. ${h.n} (สระ${h.v})</span><b>${h.s}</b></li>`).join("");show("starres");};
+$("stAgain").onclick=()=>show("starset");
 $("again").onclick=()=>show("mvset");
 </script>
 </body>

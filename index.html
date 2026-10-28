@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>เกม 24 เล่นในรถ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mitr:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#E8F1EC; --ink:#123B2C; --sub:#4E6E61;
+  --sign:#1E6B4A; --signInk:#FFFFFF;
+  --tile:#FFC93C; --tileInk:#1B1B1B; --tileEdge:#D9A21A;
+  --panel:#FFFFFF; --line:#C9DCD2; --ok:#1E6B4A;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E1F18; --ink:#E6F2EC; --sub:#9DB8AC;
+    --sign:#1E6B4A; --signInk:#FFFFFF;
+    --tile:#FFC93C; --tileInk:#1B1B1B; --tileEdge:#B88512;
+    --panel:#16302A; --line:#27473C; --ok:#7FD3AA;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E1F18; --ink:#E6F2EC; --sub:#9DB8AC;
+  --sign:#1E6B4A; --signInk:#FFFFFF;
+  --tile:#FFC93C; --tileInk:#1B1B1B; --tileEdge:#B88512;
+  --panel:#16302A; --line:#27473C; --ok:#7FD3AA;
+  color-scheme: dark;
+}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%;}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);
+  font-family:"Mitr","Noto Sans Thai","Leelawadee UI",Tahoma,sans-serif;
+  -webkit-tap-highlight-color:transparent;}
+main{max-width:30rem;margin:0 auto;padding:1rem 1rem 2rem;display:flex;flex-direction:column;gap:1rem;min-height:100%;}
+
+.sign{background:var(--sign);color:var(--signInk);border-radius:.9rem;padding:.8rem 1rem;
+  border:3px solid var(--signInk);outline:3px solid var(--sign);margin:3px;
+  display:flex;justify-content:space-between;align-items:center;}
+.sign h1{margin:0;font-size:1.25rem;font-weight:600}
+.sign .count{font-size:1rem;font-weight:500;opacity:.95}
+
+.board{background:var(--panel);border:1px solid var(--line);border-radius:1.25rem;padding:1.25rem 1rem 1.5rem;text-align:center;}
+.qno{color:var(--sub);font-size:1rem;margin:0 0 .9rem}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;}
+.tile{aspect-ratio:3/4;background:var(--tile);color:var(--tileInk);border-radius:.75rem;
+  box-shadow:0 6px 0 var(--tileEdge);display:grid;place-items:center;
+  font-size:clamp(2.6rem,14vw,3.6rem);font-weight:600;line-height:1;}
+.target{margin:1.3rem 0 0;font-size:1.15rem;color:var(--sub)}
+.target b{color:var(--ink);font-size:1.6rem;font-weight:600}
+
+.answer{margin-top:1rem;min-height:4.5rem;display:flex;align-items:center;justify-content:center;flex-direction:column;}
+.answer .eq{font-size:1.55rem;font-weight:500;color:var(--ok);letter-spacing:.02em}
+.answer .note{font-size:.95rem;color:var(--sub);margin-top:.3rem;max-width:22rem}
+.answer[hidden]{display:none}
+
+button{font:inherit;cursor:pointer;border:none;border-radius:.9rem;}
+button:focus-visible{outline:3px solid var(--tile);outline-offset:3px}
+.reveal{width:100%;padding:1rem;font-size:1.2rem;font-weight:500;background:var(--ink);color:var(--bg);}
+.nav{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.6rem}
+.nav button{padding:.9rem .5rem;font-size:1.05rem;background:var(--panel);color:var(--ink);border:1px solid var(--line)}
+.nav button:disabled{opacity:.4;cursor:default}
+
+details{background:var(--panel);border:1px solid var(--line);border-radius:1rem;padding:.8rem 1rem}
+summary{cursor:pointer;font-size:1rem;color:var(--sub)}
+.grid{display:grid;grid-template-columns:repeat(6,1fr);gap:.45rem;margin-top:.8rem}
+.grid button{padding:.6rem 0;font-size:1rem;background:var(--bg);color:var(--ink);border:1px solid var(--line)}
+.grid button.cur{background:var(--sign);color:var(--signInk);border-color:var(--sign)}
+.grid button.seen::after{content:"✓";font-size:.7rem;margin-left:2px;color:var(--ok)}
+.grid button.cur.seen::after{color:var(--signInk)}
+
+.rules{font-size:.92rem;color:var(--sub);line-height:1.7;margin:.6rem 0 0}
+
+@media (prefers-reduced-motion:no-preference){
+  .tile{transition:transform .25s ease}
+  .flip .tile{animation:pop .35s ease both}
+  .flip .tile:nth-child(2){animation-delay:.04s}
+  .flip .tile:nth-child(3){animation-delay:.08s}
+  .flip .tile:nth-child(4){animation-delay:.12s}
+  @keyframes pop{from{transform:translateY(8px) scale(.92);opacity:.3}to{transform:none;opacity:1}}
+}
+</style>
+</head>
+<body>
+<main>
+  <header class="sign">
+    <h1>เกม 24</h1>
+    <span class="count" id="count">ข้อ 1 / 14</span>
+  </header>
+
+  <section class="board" aria-live="polite">
+    <p class="qno">ใช้เลขทั้ง 4 ตัว ตัวละครั้ง ด้วย + − × ÷</p>
+    <div class="tiles" id="tiles"></div>
+    <p class="target">ทำให้ได้ <b>24</b></p>
+    <div class="answer" id="answer" hidden>
+      <div class="eq" id="eq"></div>
+      <div class="note" id="note"></div>
+    </div>
+  </section>
+
+  <button class="reveal" id="reveal">ดูเฉลย</button>
+
+  <div class="nav">
+    <button id="prev">ก่อนหน้า</button>
+    <button id="rand">สุ่มข้อ</button>
+    <button id="next">ถัดไป</button>
+  </div>
+
+  <details>
+    <summary>เลือกข้อ</summary>
+    <div class="grid" id="grid"></div>
+  </details>
+
+  <details>
+    <summary>กติกา</summary>
+    <p class="rules">ใช้ตัวเลขครบทั้ง 4 ตัว ตัวละ 1 ครั้ง สลับลำดับได้ ใส่วงเล็บได้ ใช้แค่บวก ลบ คูณ หาร ใครได้ 24 ก่อนชนะ ทุกข้อหารลงตัว ไม่ต้องใช้เศษส่วน</p>
+  </details>
+</main>
+
+<script>
+const Q = [
+  {n:"1582", a:"(5 + 1) × 8 ÷ 2"},
+  {n:"1487", a:"8 × 4 − 7 − 1"},
+  {n:"4749", a:"4 + 7 + 4 + 9"},
+  {n:"3765", a:"(7 + 5) × 6 ÷ 3"},
+  {n:"3452", a:"(3 + 5 − 2) × 4"},
+  {n:"6853", a:"6 × 8 ÷ (5 − 3)"},
+  {n:"1274", a:"(1 + 7 + 4) × 2"},
+  {n:"7413", a:"7 × (1 + 3) − 4"},
+  {n:"3137", a:"3 × 7 + 3 × 1"},
+  {n:"9865", a:"(9 + 6) ÷ 5 × 8"},
+  {n:"4696", a:"4 × 9 − 6 − 6"},
+  {n:"2973", a:"(9 + 7) × 3 ÷ 2"},
+  {n:"1327", a:"(2 + 7 − 1) × 3"},
+  {n:"6762", a:"(7 − 6 ÷ 2) × 6"}
+];
+let i = 0;
+const seen = new Set();
+const $ = id => document.getElementById(id);
+const tiles=$("tiles"), ans=$("answer"), eq=$("eq"), note=$("note"), reveal=$("reveal"), grid=$("grid");
+
+Q.forEach((q,k)=>{const b=document.createElement("button");b.textContent=k+1;b.onclick=()=>go(k);grid.appendChild(b);});
+
+function render(){
+  const q=Q[i];
+  tiles.innerHTML=q.n.split("").map(d=>`<div class="tile">${d}</div>`).join("");
+  tiles.classList.remove("flip"); void tiles.offsetWidth; tiles.classList.add("flip");
+  $("count").textContent=`ข้อ ${i+1} / ${Q.length}`;
+  ans.hidden=true; reveal.textContent="ดูเฉลย";
+  eq.textContent=q.a+" = 24"; note.textContent=q.note||"";
+  $("prev").disabled=i===0; $("next").disabled=i===Q.length-1;
+  [...grid.children].forEach((b,k)=>{b.classList.toggle("cur",k===i);b.classList.toggle("seen",seen.has(k));});
+  try{localStorage.setItem("g24-i",i)}catch(e){}
+}
+function go(k){i=Math.max(0,Math.min(Q.length-1,k));render();}
+reveal.onclick=()=>{
+  ans.hidden=!ans.hidden;
+  reveal.textContent=ans.hidden?"ดูเฉลย":"ซ่อนเฉลย";
+  if(!ans.hidden){seen.add(i);grid.children[i].classList.add("seen");}
+};
+$("prev").onclick=()=>go(i-1);
+$("next").onclick=()=>go(i+1);
+$("rand").onclick=()=>{let k;do{k=Math.floor(Math.random()*Q.length)}while(k===i);go(k);};
+
+let sx=null;
+document.querySelector(".board").addEventListener("touchstart",e=>{sx=e.touches[0].clientX},{passive:true});
+document.querySelector(".board").addEventListener("touchend",e=>{
+  if(sx===null)return;const dx=e.changedTouches[0].clientX-sx;
+  if(Math.abs(dx)>50)go(i+(dx<0?1:-1));sx=null;});
+
+try{const s=parseInt(localStorage.getItem("g24-i"));if(!isNaN(s))i=Math.min(s,Q.length-1);}catch(e){}
+render();
+</script>
+</body>
+</html>
